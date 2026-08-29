@@ -1,0 +1,36 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "UsageResponse",
+  "type": "object",
+  "required": ["plan", "requests"],
+  "properties": {
+    "account_id": { "type": "string" },
+    "plan": { "type": "string" },
+    "requests": {
+      "type": "object",
+      "required": ["used", "limit"],
+      "properties": {
+        "used": { "type": "integer", "minimum": 0 },
+        "limit": { "type": "integer", "minimum": 0 },
+        "remaining": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "ai_requests": {
+      "type": "object",
+      "properties": {
+        "used": { "type": "integer", "minimum": 0 },
+        "limit": { "type": "integer", "minimum": 0 },
+        "remaining": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "billing_period": {
+      "type": "object",
+      "properties": {
+        "start": { "type": "string" },
+        "end": { "type": "string" },
+        "resets_at": { "type": "string" }
+      }
+    }
+  },
+  "additionalProperties": true
+}

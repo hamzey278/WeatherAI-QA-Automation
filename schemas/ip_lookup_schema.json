@@ -1,0 +1,24 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "IPLookupResponse",
+  "type": "object",
+  "required": ["ip", "geo"],
+  "properties": {
+    "ip": { "type": "string" },
+    "ip_hash": { "type": "string" },
+    "ip_version": { "type": "string" },
+    "geo": {
+      "type": "object",
+      "required": ["lat", "lon"],
+      "properties": {
+        "lat": { "type": "number" },
+        "lon": { "type": "number" },
+        "city": { "type": ["string", "null"] },
+        "region": { "type": ["string", "null"] },
+        "country": { "type": ["string", "null"] },
+        "timezone": { "type": ["string", "null"] }
+      }
+    }
+  },
+  "additionalProperties": true
+}

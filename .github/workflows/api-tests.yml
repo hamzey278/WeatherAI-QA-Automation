@@ -1,0 +1,54 @@
+name: WeatherAI API Test Automation Suite
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  test:
+    name: Run API Automation Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Validate Configuration & Secrets
+        run: |
+          if [ -z "${{ secrets.WEATHER_API_KEY }}" ] && [ "${{ vars.USE_MOCK_SERVER }}" != "true" ]; then
+            echo "::warning title=Configuration Notice::WEATHER_API_KEY secret is not set. Defaulting USE_MOCK_SERVER=true for contract verification in CI."
+            echo "USE_MOCK_SERVER=true" >> $GITHUB_ENV
+          else
+            echo "WEATHER_API_KEY=${{ secrets.WEATHER_API_KEY }}" >> $GITHUB_ENV
+          fi
+
+      - name: Run Pytest Automation Suite
+        env:
+          WEATHER_API_KEY: ${{ secrets.WEATHER_API_KEY }}
+          WEATHER_API_BASE_URL: https://api.weather-ai.co
+          API_TIMEOUT: 10
+          PERFORMANCE_THRESHOLD_MS: 3000
+        run: |
+          mkdir -p reports
+          pytest -v --html=reports/report.html --self-contained-html
+
+      - name: Upload Test Report Artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: weatherai-api-test-report
+          path: reports/report.html
+          retention-days: 30

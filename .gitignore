@@ -1,0 +1,26 @@
+# Python bytecode & cache
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+
+# Environments & secrets
+.env
+.venv/
+env/
+venv/
+ENV/
+*.pem
+*.key
+
+# Reports & Test Output
+reports/
+.coverage
+htmlcov/
+*.log
+
+# IDE & OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

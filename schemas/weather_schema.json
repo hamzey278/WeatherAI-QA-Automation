@@ -1,0 +1,57 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "WeatherResponse",
+  "type": "object",
+  "required": ["location", "units", "current", "forecast"],
+  "properties": {
+    "location": {
+      "type": "object",
+      "required": ["lat", "lon"],
+      "properties": {
+        "lat": { "type": "number", "minimum": -90.0, "maximum": 90.0 },
+        "lon": { "type": "number", "minimum": -180.0, "maximum": 180.0 },
+        "city": { "type": ["string", "null"] },
+        "country": { "type": ["string", "null"] },
+        "timezone": { "type": ["string", "null"] }
+      }
+    },
+    "units": {
+      "type": "object",
+      "required": ["temperature"],
+      "properties": {
+        "temperature": { "type": "string" },
+        "wind_speed": { "type": "string" }
+      }
+    },
+    "current": {
+      "type": "object",
+      "required": ["temperature"],
+      "properties": {
+        "timestamp": { "type": "string" },
+        "temperature": { "type": "number" },
+        "humidity": { "type": ["number", "integer"] },
+        "wind_speed": { "type": "number" },
+        "condition": { "type": "string" },
+        "uv_index": { "type": "number" }
+      }
+    },
+    "forecast": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["date", "temp_max", "temp_min"],
+        "properties": {
+          "date": { "type": "string" },
+          "temp_max": { "type": "number" },
+          "temp_min": { "type": "number" },
+          "precipitation_mm": { "type": "number" },
+          "condition": { "type": "string" }
+        }
+      }
+    },
+    "ai_summary": { "type": ["string", "null"] },
+    "forecast_days": { "type": ["integer", "null"] },
+    "language": { "type": ["string", "null"] }
+  },
+  "additionalProperties": true
+}
