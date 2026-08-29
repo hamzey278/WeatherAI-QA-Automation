@@ -194,24 +194,24 @@ The report will be generated at `reports/report.html`.
 
 ## 7. Exploratory QA Findings & Engineering Decisions
 
-### 🔍 QA Finding 1: Production Host Returns 503 HTML Error
+###  QA Finding 1: Production Host Returns 503 HTML Error
 During initial exploratory probing of `https://api.weather-ai.co`, endpoints returned an HTTP 503 HTML page (`<html>...503 Server Error...The service you requested is not available yet...</html>`) rather than standard JSON-formatted error responses (`{"error": ...}`).
 - **Impact**: Unhandled HTML errors break standard JSON parsers expecting `Content-Type: application/json`.
 - **Framework Recommendation**: The API client inspects `Content-Type` before parsing JSON and raises a structured error. Additionally, a contract-compliant mock server adapter was introduced to ensure deterministic test execution during server downtime or CI runs.
 
-### 💡 Design Choice 1: Structural & Invariant Assertions Over Volatile Data
+###  Design Choice 1: Structural & Invariant Assertions Over Volatile Data
 Weather measurements (temperature, wind speed, humidity) are highly volatile. Asserting exact values (e.g. `temperature == 24.5`) creates flaky tests. The framework validates **structural invariants**:
 - Temperature must be numeric (`isinstance(temp, (int, float))`).
 - Latitude must be in `[-90, 90]` and Longitude in `[-180, 180]`.
 - Array length must equal the requested `days` count.
 - Forecast dates must be valid ISO strings.
 
-### 💡 Design Choice 2: Secret Redaction & Sanitization Logger
+###  Design Choice 2: Secret Redaction & Sanitization Logger
 To prevent API keys from leaking in test reports, console logs, or CI build logs:
 - A custom `SecretSanitizingFormatter` in `utils/logger.py` automatically intercepts any pattern matching `wai_*` or `Bearer wai_*` and replaces it with `wai_***REDACTED***`.
 - `.env` is strictly listed in `.gitignore`.
 
-### 💡 Design Choice 3: Protection of Monthly Quota
+###  Design Choice 3: Protection of Monthly Quota
 To prevent test runs from depleting customer quota:
 - Rate-limit testing inspects response headers (`X-RateLimit-Limit`, `X-RateLimit-Remaining`) rather than firing 50,000 requests to trigger a 429 status code.
 
