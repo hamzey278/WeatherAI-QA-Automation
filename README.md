@@ -1,4 +1,4 @@
-# WeatherAI API Test Automation Framework
+# API Test Automation Framework
 
 ![Python](https://img.shields.io/badge/Python-3.12%2B-blue.svg)
 ![pytest](https://img.shields.io/badge/pytest-8.0%2B-brightgreen.svg)
